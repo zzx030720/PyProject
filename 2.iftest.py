@@ -5,3 +5,5 @@ if(age>=18):
 elif(age<18):
     print("未成年")
 print("wwww")
+
+print("iftest测试")
