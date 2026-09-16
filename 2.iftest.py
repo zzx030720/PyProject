@@ -7,3 +7,4 @@ elif(age<18):
 print("wwww")
 
 print("iftest测试")
+print("github测试")
