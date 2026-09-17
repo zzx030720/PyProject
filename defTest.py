@@ -6,5 +6,3 @@ def deflength(str):
 
 str = input("请输入字符串：")
 print(f"字符串长度为{deflength(str)}")
-
-# 撤回提交测试
