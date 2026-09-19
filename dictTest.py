@@ -8,3 +8,4 @@ for i in dict:
         dict[i]["工资"] = dict[i]["工资"]+1000
 
 print(dict)
+#测试git
