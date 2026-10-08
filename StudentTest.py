@@ -76,6 +76,7 @@ class Edumaganment:
 #运行系统
     def run(self):
         while True:
+            print()
             print("1. 添加学生")
             print("2. 修改学生成绩")
             print("3. 删除学生")
