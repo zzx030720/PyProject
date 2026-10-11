@@ -53,17 +53,37 @@ if prompt:
             {"role": "system", "content": "You are a helpful assistant"},
             *st.session_state.messages
         ],
-        stream=False,
+        stream=True,
         reasoning_effort="high",
         extra_body={"thinking": {"type": "enabled"}}
     )
 
-# 打印AI大模型的回复
-    print("------------->AI大模型回复:",response.choices[0].message.content)
-    st.chat_message("assistant").write(response.choices[0].message.content)
-    # 添加AI大模型回复到会话状态
-    st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message.content})
+# 打印AI大模型的回复,非流式输出
+#     print("------------->AI大模型回复:",response.choices[0].message.content)
+#     st.chat_message("assistant").write(response.choices[0].message.content)
+#     # 添加AI大模型回复到会话状态
+#     st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message.content})
 
+# 流式输出AI大模型的回复
+
+    # 创建一个空的st.empty()对象用于显示AI大模型的回复
+    response_message = st.empty()
+    full_result = ""
+    for chunk in response:
+        delta = chunk.choices[0].delta
+        # 思考内容:可能为None,做兜底后再累加
+        # reasoning = delta.reasoning_content
+        # if reasoning:
+        #     print("------------->AI大模型思考:", reasoning)
+        #     full_result += reasoning
+        # 正式回答内容:同样可能为None,做兜底后再累加
+        content = delta.content
+        if content:
+            # print("------------->AI大模型回复:", content)
+            full_result += content
+        response_message.chat_message("assistant").write(full_result)
+    # 流式输出结束后,把完整回复存入会话状态,保留聊天记录
+    st.session_state.messages.append({"role": "assistant", "content": full_result})
 
 
 
