@@ -33,6 +33,8 @@ for message in st.session_state.messages:
     elif message["role"] == "assistant":
         st.chat_message("assistant").write(message["content"])
 
+    # st.chat_message(message["role"]).write(message["content"])
+
 
 #logo
 st.logo("👨‍💻")
