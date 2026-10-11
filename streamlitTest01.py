@@ -1,5 +1,23 @@
 import streamlit as st
 
+# 设置页面配置
+st.set_page_config(
+    page_title="StreamlitTest01",
+    page_icon="🧊",
+
+    #布局设置为wide铺满屏幕
+    layout="wide",
+
+    #初始侧边栏状态设置为expanded展开
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.baidu.com',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "StreamlitTest第一个测试案例"
+    }
+)
+
+
 st.title("测试")
 
 st.write("2026-10-10,streamlit测试")
