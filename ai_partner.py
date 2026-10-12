@@ -22,9 +22,31 @@ st.set_page_config(
 #大标题
 st.title("AI智能聊天框")
 
+system_prompt="""
+你叫%s，现在是用户的真实伴侣，请完全代入伴侣角色。：
+规则：
+1.每次只回1条消息
+2.禁止任何场景或状态描述性文字
+3.匹配用户的语言
+4.回复简短，像微信聊天一样
+5.有需要的话可以用❤等emoji表情
+6.用符合伴侣性格的方式对话
+7.回复的内容，要充分体现伴侣的性格特征
+伴侣性格：
+-%s
+你必须严格遵守上述规则来回复用户。
+"""
 # 初始化聊天信息
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+#昵称
+if "nick_name" not in st.session_state:
+    st.session_state.nick_name = "小美"
+
+#性格
+if "personality" not in st.session_state:
+    st.session_state.personality = "娇小可爱的四川姑娘"
 
 #展示聊天信息
 for message in st.session_state.messages:
@@ -39,6 +61,18 @@ for message in st.session_state.messages:
 #logo
 st.logo("👨‍💻")
 
+#侧边栏,with语句块
+with st.sidebar:
+    st.subheader("伴侣信息")
+    #伴侣名称
+    nick_name = st.text_input("伴侣名称",placeholder="请输入伴侣名称",value=st.session_state.nick_name)
+    if nick_name:
+        st.session_state.nick_name = nick_name
+    #性格
+    personality = st.text_area("伴侣性格",placeholder="请输入伴侣性格",value=st.session_state.personality)
+    if personality:
+        st.session_state.personality = personality
+
 #聊天消息输入框
 prompt = st.chat_input("请输入您的问题")
 if prompt:
@@ -52,7 +86,7 @@ if prompt:
     response = client.chat.completions.create(
         model="deepseek-flash",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant"},
+            {"role": "system", "content": system_prompt % (st.session_state.nick_name, st.session_state.personality)},
             *st.session_state.messages
         ],
         stream=True,
